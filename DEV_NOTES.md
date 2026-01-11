@@ -42,7 +42,7 @@ docker compose down -v
 
 ---
 
-### 4. Warning: "ForceConsistentCasingInFileNames"
+### Warning: "ForceConsistentCasingInFileNames"
 
 **Cause:** Ensures TypeScript strictly enforces case-sensitive file imports, preventing "Module not found" errors during Vercel deployment.
 **Fix:** Open `tsconfig.json` and add this line inside `"compilerOptions"`:
