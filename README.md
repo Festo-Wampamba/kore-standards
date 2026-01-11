@@ -57,9 +57,20 @@ This project follows a modern **Design Science Research (DSR)** approach using t
 
 ## 💻 Getting Started (Local Development)
 
-To run this project locally, follow these steps:
+Follow these instructions to set up the project locally on your machine.
 
-### 1. Clone the repository
+### 1. Prerequisites
+
+Ensure you have the following installed on your system:
+
+* **Node.js** (v18 or later)
+* **pnpm** (Package Manager) - *Install via `npm install -g pnpm`*
+* **Docker Desktop** (For running the PostgreSQL database)
+* **Git**
+
+### 2. Clone the repository
+
+Download the code to your local machine:
 
 ```bash
 git clone [https://github.com/Festo-Wampamba/job-link.git](https://github.com/Festo-Wampamba/job-link.git)
