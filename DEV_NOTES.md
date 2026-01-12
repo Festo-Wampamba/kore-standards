@@ -6,12 +6,12 @@ This document contains setup instructions, common fixes, and command references 
 
 We use **pnpm** for this project.
 
-| Action | Command | Description |
-| :--- | :--- | :--- |
-| **Start Server** | `pnpm dev` | Starts Next.js on localhost:3000 |
-| **Generate SQL** | `pnpm db:generate` | Creates migration files based on schema changes |
-| **Push to DB** | `pnpm db:migrate` | Applies the migrations to the actual Docker database |
-| **Open Studio** | `pnpm db:studio` | Opens the visual database editor |
+| Action           | Command            | Description                                          |
+| :--------------- | :----------------- | :--------------------------------------------------- |
+| **Start Server** | `pnpm dev`         | Starts Next.js on localhost:3000                     |
+| **Generate SQL** | `pnpm db:generate` | Creates migration files based on schema changes      |
+| **Push to DB**   | `pnpm db:migrate`  | Applies the migrations to the actual Docker database |
+| **Open Studio**  | `pnpm db:studio`   | Opens the visual database editor                     |
 
 ---
 
@@ -19,12 +19,12 @@ We use **pnpm** for this project.
 
 These commands control the database container running in the background.
 
-| Action | Command |
-| :--- | :--- |
-| **Check Status** | `docker ps` |
-| **Start Database** | `docker compose up -d` |
-| **Stop Database** | `docker compose down` |
-| **View Logs** | `docker logs job-link-db` |
+| Action             | Command                                |
+| :----------------- | :------------------------------------- |
+| **Check Status**   | `docker ps`                            |
+| **Start Database** | `docker compose up -d`                 |
+| **Stop Database**  | `docker compose down`                  |
+| **View Logs**      | `docker logs postgres_work-connect-ug` |
 
 ---
 
@@ -52,3 +52,4 @@ docker compose down -v
     "forceConsistentCasingInFileNames": true,
     // ... other settings
 }
+```
