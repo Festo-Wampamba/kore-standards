@@ -4,7 +4,7 @@ import { createdAt, updatedAt } from "../schemaHelpers";
 import { relations } from "drizzle-orm";
 
 export const UserNotificationSettingsTable = pgTable ("user_notification_settings", {
-    userId: varchar().primaryKey().references(() => UserTable.id),
+    userId: varchar().primaryKey().references(() => UserTable.id, { onDelete: 'cascade' }),
     newJobEmailNotifications: boolean().notNull().default(false),
     aiPrompt: varchar(),
     createdAt,
