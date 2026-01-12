@@ -45,7 +45,12 @@ export const JobListingTable = pgTable("job_listings", {
     updatedAt
  },
 
- (table) => [index().on(table.district)]
+ (table) => [
+    index().on(table.district),
+    index().on(table.status),
+    index().on(table.organizationId),
+    index().on(table.postedAt),
+ ]
 );
 
 export const jobListingReferences = relations(JobListingTable, ({ one, many}) => ({

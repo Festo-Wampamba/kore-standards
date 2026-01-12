@@ -1,4 +1,5 @@
-import { integer, pgEnum, pgTable, primaryKey, text, uuid, varchar } from "drizzle-orm/pg-core";
+import { check, integer, pgEnum, pgTable, primaryKey, text, uuid, varchar } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { createdAt, updatedAt } from "../schemaHelpers";
 import { JobListingTable } from "./jobListing";
 import { UserTable } from "./user";
@@ -18,7 +19,10 @@ export const JobListingApplicationTable = pgTable("job_listing_applications", {
     createdAt,
     updatedAt,
 },
-table => [primaryKey({ columns: [table.jobListingId, table.userId] })],
+    table => [
+        primaryKey({ columns: [table.jobListingId, table.userId] }),
+        check("rating_check", sql`${table.rating} >= 0 AND ${table.rating} <= 5`)
+    ],
 )
 
 
