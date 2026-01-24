@@ -196,7 +196,7 @@ erDiagram
         varchar userId PK_FK
         varchar resumeFileUrl
         varchar resumeFileKey
-        varchar aiSummary
+        text aiSummary
     }
 
     USER_NOTIFICATION_SETTINGS {
@@ -544,7 +544,7 @@ As this is an academic project, contributions are currently limited to the team 
 
 ### Common Issues
 
-**Database Connection Failed**
+#### Database Connection Failed
 
 ```
 Error: connect ECONNREFUSED 127.0.0.1:5432
@@ -557,7 +557,7 @@ docker compose up -d
 docker ps  # Verify container is running
 ```
 
-**Port Already in Use**
+#### Port Already in Use
 
 ```
 Error: Port 3000 is already in use
@@ -572,7 +572,7 @@ npx kill-port 3000             # Windows
 pnpm dev -- -p 3001            # Use port 3001 instead
 ```
 
-**Environment Variables Not Loading**
+#### Environment Variables Not Loading
 
 ```
 Error: DB_USER is required
@@ -602,4 +602,4 @@ For inquiries about this project:
 
 ---
 
-**Built with ❤️ by MUBS Business Computing Students**
+## Built with ❤️ by MUBS Business Computing Students
