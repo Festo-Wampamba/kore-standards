@@ -139,8 +139,8 @@ graph TB
 
 ```mermaid
 erDiagram
-    USERS ||--o| USER_RESUMES : "has"
-    USERS ||--o| USER_NOTIFICATION_SETTINGS : "has"
+    USERS ||--|| USER_RESUMES : "has"
+    USERS ||--|| USER_NOTIFICATION_SETTINGS : "has"
     USERS ||--o{ ORGANIZATION_USER_SETTINGS : "manages"
     USERS ||--o{ JOB_LISTING_APPLICATIONS : "submits"
 
