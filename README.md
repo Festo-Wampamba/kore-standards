@@ -135,14 +135,11 @@ graph TB
 
 ## 🗄️ Database Schema
 
-### Entity Relationship Overview
-
-```mermaid
 erDiagram
-    USERS ||--|| USER_RESUMES : "has"
-    USERS ||--|| USER_NOTIFICATION_SETTINGS : "has"
-    USERS ||--o{ ORGANIZATION_USER_SETTINGS : "manages"
-    USERS ||--o{ JOB_LISTING_APPLICATIONS : "submits"
+USERS ||--|| USER_RESUMES : "has"
+USERS ||--|| USER_NOTIFICATION_SETTINGS : "has"
+USERS ||--o{ ORGANIZATION_USER_SETTINGS : "manages"
+USERS ||--o{ JOB_LISTING_APPLICATIONS : "submits"
 
     ORGANIZATIONS ||--o{ JOB_LISTINGS : "posts"
     ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : "managed_by"
@@ -184,8 +181,8 @@ erDiagram
     }
 
     JOB_LISTING_APPLICATIONS {
-        uuid jobListingId PK_FK
-        varchar userId PK_FK
+        uuid jobListingId PK, FK
+        varchar userId PK, FK
         text coverLetter
         text resumeUrl
         integer rating
@@ -193,25 +190,26 @@ erDiagram
     }
 
     USER_RESUMES {
-        varchar userId PK_FK
+        varchar userId PK, FK
         varchar resumeFileUrl
         varchar resumeFileKey
         text aiSummary
     }
 
     USER_NOTIFICATION_SETTINGS {
-        varchar userId PK_FK
+        varchar userId PK, FK
         boolean newJobEmailNotifications
         varchar aiPrompt
     }
 
     ORGANIZATION_USER_SETTINGS {
-        varchar userId PK_FK
-        varchar organizationId PK_FK
+        varchar userId PK, FK
+        varchar organizationId PK, FK
         boolean newApplicationEmailNotifications
         integer minimumRating
     }
-```
+
+---
 
 ### Table Descriptions
 
