@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Kore-Standards - AI-Powered Job Matching Platform",
-  description: "Connecting job seekers with legitimate employers in Uganda using AI-driven semantic matching",
+  description:
+    "Connecting job seekers with legitimate employers in Uganda using AI-driven semantic matching",
 };
 
 export default function RootLayout({
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>
