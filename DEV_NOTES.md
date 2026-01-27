@@ -75,7 +75,6 @@ We use **pnpm** as our package manager for this project.
    ```
 
 3. **Docker Desktop**
-
    - Download from [docker.com](https://www.docker.com/products/docker-desktop/)
    - Verify installation:
      ```bash
@@ -456,7 +455,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching jobs:", error);
     return NextResponse.json(
       { error: "Failed to fetch jobs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -504,7 +503,6 @@ docs/update-readme             # Documentation changes
    ```
 
 4. **Create Pull Request** on GitHub:
-
    - Base: `develop`
    - Compare: `feature/your-feature-name`
    - Add description and link to issue (if applicable)
@@ -711,6 +709,70 @@ npx kill-port 3000             # Windows
 pnpm dev -- -p 3001
 ```
 
+### 7. 🚨 CRITICAL: Privacy Browser Shields Blocking Local Development
+
+> **⚠️ WARNING: This issue can cost you HOURS of debugging time!**
+
+**Issue**: Privacy-focused browsers (Brave, Firefox Focus, etc.) can **silently block** local development tools, preventing proper functionality even when your code is 100% correct.
+
+**Symptoms**:
+
+- Inngest dev server shows events received but functions don't execute
+- Drizzle Studio can't connect to local database
+- Webhooks aren't reaching your local endpoints
+- Database writes fail silently with no error messages
+- API calls timeout or return empty responses
+
+**Affected Browsers**:
+
+- 🛡️ **Brave Browser** - Brave Shields
+- 🛡️ **Firefox Focus** - Enhanced Tracking Protection
+- 🛡️ **DuckDuckGo Browser** - Privacy Protection
+- 🛡️ **Safari** - Intelligent Tracking Prevention (less common)
+
+**Root Cause**:
+Privacy shields block cross-origin requests and tracking scripts. Even though `localhost` is local, these browsers treat different ports (`localhost:3000` → `localhost:8288`) as cross-origin requests and block them for "security."
+
+**Solution**:
+
+**For Brave Browser**:
+
+```
+1. Click the Brave Shield icon (🛡️) in the address bar
+2. Toggle "Shields" to OFF for localhost
+3. Or set Shields to "Advanced View" and disable:
+   - Block cross-site trackers
+   - Block fingerprinting
+```
+
+**For Firefox**:
+
+```
+1. Click the shield icon in address bar
+2. Turn OFF "Enhanced Tracking Protection" for localhost
+```
+
+**Alternative**: Use **Chrome** or **Edge** for local development (they don't have aggressive shields by default).
+
+**Real-World Impact**:
+One developer spent **7+ hours debugging** Inngest and Drizzle persistence issues, checking environment variables, rewriting database logic, and reviewing migrations—only to discover Brave Shields was silently blocking all requests. The code was perfect; the browser was the issue.
+
+**Best Practice**:
+
+```bash
+# Add to your development checklist:
+- [ ] Using Chrome/Edge for development
+- OR
+- [ ] Privacy shields disabled for localhost
+```
+
+**Test if shields are the issue**:
+
+1. Open Chrome/Edge (no shields)
+2. Run the same workflow
+3. If it works → shields were blocking
+4. If it fails → actual code issue
+
 ---
 
 ## ⚡ Performance Optimization
@@ -730,7 +792,7 @@ export const JobListingTable = pgTable(
     index().on(table.district), // For location filtering
     index().on(table.status), // For status queries
     index().on(table.postedAt), // For sorting by date
-  ]
+  ],
 );
 ```
 
