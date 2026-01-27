@@ -2,7 +2,7 @@
 
 ![Project Status](https://img.shields.io/badge/Status-Development-orange)
 ![University](https://img.shields.io/badge/MUBS-Faculty%20of%20Computing-blue)
-![License](https://img.shields.io/badge/License-Apache%202.0-purple)
+![License](https://img.shields.io/badge/License-Apache%202.0-red)
 
 ## 📖 Project Overview
 
