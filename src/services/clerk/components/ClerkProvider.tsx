@@ -5,11 +5,15 @@ import { ReactNode, useEffect, useState } from "react";
 import { dark } from "@clerk/themes";
 
 export function ClerkProvider({ children }: { children: ReactNode }) {
-  // Initialize to false for SSR, will be updated client-side
+  // Use 'use client' component pattern - always start with false for SSR consistency
+  // This prevents hydration mismatch by ensuring server and client render the same initially
+  const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // Initial check wrapped in timeout to avoid synchronous setState in effect
+    // Mark as mounted and check dark mode only on client
+    setMounted(true);
+    
     const updateDarkMode = () => {
       setIsDarkMode(document.body.classList.contains("dark"));
     };
@@ -30,7 +34,7 @@ export function ClerkProvider({ children }: { children: ReactNode }) {
 
   return (
     <OriginalClerkProvider
-      appearance={isDarkMode ? { baseTheme: [dark] } : undefined}
+      appearance={mounted && isDarkMode ? { baseTheme: [dark] } : undefined}
     >
       {children}
     </OriginalClerkProvider>
