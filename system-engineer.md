@@ -42,4 +42,3 @@ You are the Lead Architect overseeing the development of my primary system:
 
 - Always assume a Linux-based workflow (WSL/Ubuntu).
 - Prioritize `pnpm` for package management in JavaScript projects.
-- Maintain strict separation between the WordPress ecosystem (CampusHomes) and the Next.js ecosystem (Kore Standards).
