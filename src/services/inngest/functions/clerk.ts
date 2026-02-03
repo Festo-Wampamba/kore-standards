@@ -1,7 +1,13 @@
 import { NonRetriableError } from "inngest";
 import { inngest } from "../client";
-import { deleteUser, insertUser, updateUser } from "@/features/users/db/users";
-import { insertUserNotificationSettings } from "@/features/users/db/userNotificationSettings";
+import { deleteUser, updateUser } from "@/features/users/db/users";
+import { insertOrganization } from "@/features/organizations/db/users";
+import { db } from "@/drizzle/db";
+import { UserTable, UserNotificationSettingsTable } from "@/drizzle/schema";
+import { revalidateUserCache } from "@/features/users/db/cache/users";
+import { revalidateUserNotificationSettingsCache } from "@/features/users/db/cache/userNotificationSettings";
+import { eq } from "drizzle-orm";
+
 
 
 export const clerkCreateUser = inngest.createFunction(
@@ -18,22 +24,42 @@ export const clerkCreateUser = inngest.createFunction(
                 throw new NonRetriableError("No primary email address found for user");
             }
 
-            await insertUser({
-                id: userData.id,
-                name: `${userData.first_name ?? ''} ${userData.last_name ?? ''}`.trim() || 'Unknown User',
-                imageUrl: userData.image_url,
-                email: email.email_address,
-                createdAt: new Date(userData.created_at),
-                updatedAt: new Date(userData.updated_at),
-            });
+            // Check if user already exists (idempotency for Inngest retries)
+            const existingUser = await db
+                .select({ id: UserTable.id })
+                .from(UserTable)
+                .where(eq(UserTable.id, userData.id))
+                .limit(1);
 
-            console.log("User created in database:", userData.id);
+            if (existingUser.length === 0) {
+                // User doesn't exist - create both user and notification settings atomically
+                await db.transaction(async (tx) => {
+                    // Insert user (no onConflictDoNothing needed since we checked first)
+                    await tx.insert(UserTable).values({
+                        id: userData.id,
+                        name: `${userData.first_name ?? ''} ${userData.last_name ?? ''}`.trim() || 'Unknown User',
+                        imageUrl: userData.image_url,
+                        email: email.email_address,
+                        createdAt: new Date(userData.created_at),
+                        updatedAt: new Date(userData.updated_at),
+                    });
+
+                    // Insert notification settings in same transaction
+                    await tx.insert(UserNotificationSettingsTable).values({
+                        userId: userData.id,
+                    });
+                });
+
+                console.log("User and notification settings created successfully:", userData.id);
+            } else {
+                console.log("User already exists (idempotent retry):", userData.id);
+            }
+
+            // Revalidate caches
+            revalidateUserCache(userData.id);
+            revalidateUserNotificationSettingsCache(userData.id);
+
             return userData.id;
-        });
-
-        await step.run("create-user-notification-settings", async () => {
-            await insertUserNotificationSettings({ userId });
-            console.log("User notification settings created for:", userId);
         });
 
         console.log("User creation flow completed successfully for:", userId);
@@ -86,3 +112,25 @@ export const clerkDeleteUser = inngest.createFunction(
         })
     }
 )
+
+
+export const clerkCreateOrganization = inngest.createFunction(
+    { id: "clerk/create-db-organization", name: "Clerk - Create DB Organization" },
+    { event: "clerk/organization.created", },
+    async ({ event, step }) => {
+        await step.run("create-organization", async () => {
+            const orgData = event.data.data;
+
+            await insertOrganization({
+                id: orgData.id,
+                name: orgData.name,
+                imageUrl: orgData.image_url,
+                createdAt: new Date(orgData.created_at),
+                updatedAt: new Date(orgData.updated_at),
+            });
+
+            console.log("Organization created in database:", orgData.id);
+        });
+    }
+);
+
