@@ -26,6 +26,7 @@ export const jobListingTypeEnum = pgEnum("job_listings_type", jobListingTypes)
 
 export const JobListingTable = pgTable("job_listings", {
     id,
+    // CASCADE DELETE: When an organization is deleted, all its job listings are automatically deleted
     organizationId: varchar().references(() => OrganizationTable.id, { onDelete: "cascade" }).notNull(),
     title: varchar().notNull(),
     description: text().notNull(),
@@ -42,7 +43,25 @@ export const JobListingTable = pgTable("job_listings", {
     createdAt,
     updatedAt,
 },
-table => [index().on(table.district)]
+table => [
+  // Geographic filtering indexes
+  index('idx_job_listings_district').on(table.district),
+  index('idx_job_listings_region').on(table.region),
+  
+  // Status filtering (most common query pattern)
+  index('idx_job_listings_status').on(table.status),
+  
+  // Organization-specific queries
+  index('idx_job_listings_org_id').on(table.organizationId),
+  
+  // Date-based sorting and filtering
+  index('idx_job_listings_posted_at').on(table.postedAt),
+  
+  // Composite indexes for common query combinations
+  // Example: "Show all published jobs in X district, sorted by posted date"
+  index('idx_job_listings_status_district').on(table.status, table.district),
+  index('idx_job_listings_status_posted').on(table.status, table.postedAt),
+]
 )
 
 export const jobListingReferences = relations(JobListingTable, ({ one, many }) => ({ 
