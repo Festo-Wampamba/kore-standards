@@ -1,6 +1,33 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import z from "zod";
 
+/**
+ * Server-side environment variables configuration
+ * 
+ * This module validates and transforms environment variables at build time and runtime.
+ * If any required variables are missing or invalid, the application will FAIL TO START.
+ * 
+ * Required Environment Variables:
+ * - DB_USER: PostgreSQL username
+ * - DB_PASSWORD: PostgreSQL password
+ * - DB_HOST: PostgreSQL host (e.g., localhost, or RDS endpoint)
+ * - DB_PORT: PostgreSQL port (typically 5432)
+ * - DB_NAME: Database name
+ * 
+ * The individual DB_* variables are automatically transformed into a single
+ * DATABASE_URL connection string for use with Drizzle ORM.
+ * 
+ * Example .env file:
+ * ```
+ * DB_USER=postgres
+ * DB_PASSWORD=mysecretpassword
+ * DB_HOST=localhost
+ * DB_PORT=5432
+ * DB_NAME=kore_standards
+ * ```
+ * 
+ * See .env.example for a template.
+ */
 export const env = createEnv({
     server: {
         DB_USER: z.string().min(1),
