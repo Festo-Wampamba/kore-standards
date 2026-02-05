@@ -1,5 +1,5 @@
 {
-  "id": "ba4d8b64-0c83-4299-a9a0-2c5bc189a027",
+  "id": "309911be-746e-4d2a-a317-78c7175d8d67",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -214,11 +214,113 @@
         }
       },
       "indexes": {
-        "job_listings_district_index": {
-          "name": "job_listings_district_index",
+        "idx_job_listings_district": {
+          "name": "idx_job_listings_district",
           "columns": [
             {
               "expression": "district",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_region": {
+          "name": "idx_job_listings_region",
+          "columns": [
+            {
+              "expression": "region",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_status": {
+          "name": "idx_job_listings_status",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_org_id": {
+          "name": "idx_job_listings_org_id",
+          "columns": [
+            {
+              "expression": "organizationId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_posted_at": {
+          "name": "idx_job_listings_posted_at",
+          "columns": [
+            {
+              "expression": "postedAt",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_status_district": {
+          "name": "idx_job_listings_status_district",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "district",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_job_listings_status_posted": {
+          "name": "idx_job_listings_status_posted",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "postedAt",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -480,8 +582,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "OrganizationTable": {
-          "name": "OrganizationTable",
+        "organizationId": {
+          "name": "organizationId",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
@@ -529,12 +631,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "organization_user_settings_OrganizationTable_organizations_id_fk": {
-          "name": "organization_user_settings_OrganizationTable_organizations_id_fk",
+        "organization_user_settings_organizationId_organizations_id_fk": {
+          "name": "organization_user_settings_organizationId_organizations_id_fk",
           "tableFrom": "organization_user_settings",
           "tableTo": "organizations",
           "columnsFrom": [
-            "OrganizationTable"
+            "organizationId"
           ],
           "columnsTo": [
             "id"
@@ -544,11 +646,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "organization_user_settings_userId_OrganizationTable_pk": {
-          "name": "organization_user_settings_userId_OrganizationTable_pk",
+        "organization_user_settings_userId_organizationId_pk": {
+          "name": "organization_user_settings_userId_organizationId_pk",
           "columns": [
             "userId",
-            "OrganizationTable"
+            "organizationId"
           ]
         }
       },

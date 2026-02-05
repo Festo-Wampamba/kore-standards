@@ -70,12 +70,12 @@ CREATE TABLE "job_listing_applications" (
 --> statement-breakpoint
 CREATE TABLE "organization_user_settings" (
 	"userId" varchar NOT NULL,
-	"OrganizationTable" varchar NOT NULL,
+	"organizationId" varchar NOT NULL,
 	"newApplicationEmailNotification" boolean DEFAULT false NOT NULL,
 	"minimumRating" integer,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "organization_user_settings_userId_OrganizationTable_pk" PRIMARY KEY("userId","OrganizationTable")
+	CONSTRAINT "organization_user_settings_userId_organizationId_pk" PRIMARY KEY("userId","organizationId")
 );
 --> statement-breakpoint
 ALTER TABLE "job_listings" ADD CONSTRAINT "job_listings_organizationId_organizations_id_fk" FOREIGN KEY ("organizationId") REFERENCES "public"."organizations"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -84,5 +84,11 @@ ALTER TABLE "user_notification_settings" ADD CONSTRAINT "user_notification_setti
 ALTER TABLE "job_listing_applications" ADD CONSTRAINT "job_listing_applications_jobListingId_job_listings_id_fk" FOREIGN KEY ("jobListingId") REFERENCES "public"."job_listings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "job_listing_applications" ADD CONSTRAINT "job_listing_applications_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "organization_user_settings" ADD CONSTRAINT "organization_user_settings_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "organization_user_settings" ADD CONSTRAINT "organization_user_settings_OrganizationTable_organizations_id_fk" FOREIGN KEY ("OrganizationTable") REFERENCES "public"."organizations"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-CREATE INDEX "job_listings_district_index" ON "job_listings" USING btree ("district");
+ALTER TABLE "organization_user_settings" ADD CONSTRAINT "organization_user_settings_organizationId_organizations_id_fk" FOREIGN KEY ("organizationId") REFERENCES "public"."organizations"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "idx_job_listings_district" ON "job_listings" USING btree ("district");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_region" ON "job_listings" USING btree ("region");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_status" ON "job_listings" USING btree ("status");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_org_id" ON "job_listings" USING btree ("organizationId");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_posted_at" ON "job_listings" USING btree ("postedAt");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_status_district" ON "job_listings" USING btree ("status","district");--> statement-breakpoint
+CREATE INDEX "idx_job_listings_status_posted" ON "job_listings" USING btree ("status","postedAt");
