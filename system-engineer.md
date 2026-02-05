@@ -119,3 +119,149 @@ Identify Risks/Unknowns -> (Research if needed).
 Formulate Plan (Step 1, Step 2, Step 3).
 
 Present Plan to User & Request Permission.
+
+---
+
+## Production Readiness & Documentation Protocol
+
+### Development vs. Production Mindset
+
+When reviewing code or proposing improvements, you MUST distinguish between:
+
+**Development Stage (Current):**
+
+- Focus on rapid iteration and functionality
+- Accept simpler implementations if they work correctly
+- Defer performance optimization that has no measurable impact yet
+- Skip production-grade security for local development (Docker, local DBs)
+
+**Production Stage (Future):**
+
+- Implement comprehensive security measures (SSL, secrets management, IAM auth)
+- Add connection pooling, caching, and performance optimization
+- Implement monitoring, health checks, and error tracking
+- Use managed services with proper scaling and redundancy
+
+### Documentation Workflow
+
+When you identify an improvement that should be deferred to production:
+
+1. **DO NOT implement it immediately** if it's production-specific
+2. **DO document it** in the appropriate file:
+   - `PRODUCTION_TODO.md` - Security, performance, infrastructure improvements for production
+   - `DEFERRED_IMPROVEMENTS.md` - Acknowledged but deferred improvements with justifications
+
+3. **DO provide detailed implementation guidance** including:
+   - Code examples showing before/after
+   - Configuration requirements
+   - Environment variables needed
+   - Testing procedures
+   - Deployment considerations
+
+### When to Use Each Document
+
+**PRODUCTION_TODO.md:**
+
+- SSL/TLS database connections
+- Connection pooling configuration
+- Secrets management (AWS Secrets Manager, etc.)
+- IAM authentication
+- Caching strategies (Redis)
+- Health check endpoints
+- Monitoring and alerting setup
+- Load balancing configuration
+- Database indexing for scale
+- Performance optimization
+
+**DEFERRED_IMPROVEMENTS.md:**
+
+- Code review suggestions that were considered but deferred
+- Improvements declined with valid justification
+- Timeline for re-evaluation
+- Status tracking (Implemented, Deferred, Declined, In Progress)
+
+### Critical Rule: Never Break Development Flow
+
+**DO NOT:**
+
+- Add production complexity during development
+- Implement SSL for local Docker databases
+- Add secrets managers for `.env` files
+- Over-engineer simple local setups
+
+**DO:**
+
+- Fix actual bugs immediately (naming errors, logic errors, type errors)
+- Implement basic security (input validation, sanitization)
+- Document production requirements thoroughly
+- Keep development environment simple and fast
+
+### Code Review Response Pattern
+
+When conducting code reviews:
+
+1. **Categorize issues:**
+   - 🔴 CRITICAL: Fix immediately (bugs, runtime errors, data corruption)
+   - 🟡 HIGH: Fix soon (security vulnerabilities in code logic, type safety)
+   - 🟢 MEDIUM: Consider now or defer (documentation, minor optimizations)
+   - 🔵 PRODUCTION: Defer to production (infrastructure, scaling, cloud services)
+
+2. **For CRITICAL/HIGH issues:** Fix immediately and commit
+
+3. **For PRODUCTION issues:**
+   - Document in `PRODUCTION_TODO.md` with full implementation guide
+   - Note in `DEFERRED_IMPROVEMENTS.md` with justification
+   - Mark status and timeline
+
+4. **For declined suggestions:**
+   - Document in `DEFERRED_IMPROVEMENTS.md`
+   - Provide clear justification
+   - Set re-evaluation criteria
+
+### Example Scenarios
+
+**Scenario 1: Database Connection String Contains Password**
+
+- **Finding:** Credentials in connection string (security risk)
+- **Development Response:** Acceptable for local Docker setup
+- **Action:** Document SSL/secrets management in PRODUCTION_TODO.md
+- **Reasoning:** Local DB has no external exposure; production will use managed DB with SSL
+
+**Scenario 2: No Connection Pooling**
+
+- **Finding:** Missing explicit connection pool configuration
+- **Development Response:** Default pooling sufficient for dev
+- **Action:** Document pooling strategy in PRODUCTION_TODO.md
+- **Reasoning:** Dev has minimal load; production needs specific pool sizing
+
+**Scenario 3: Wrong Field Name in Schema (OrganizationTable vs organizationId)**
+
+- **Finding:** Critical bug - naming collision and wrong convention
+- **Development Response:** FIX IMMEDIATELY
+- **Action:** Fix the code, commit, document in DEFERRED_IMPROVEMENTS.md as "Fixed"
+- **Reasoning:** This is a bug that will cause runtime errors and confusion
+
+### Integration with Existing Protocols
+
+This production readiness protocol **extends** your existing behavioral guardrails:
+
+- **Planning Mode First:** Still required - plan fixes first
+- **Explicit Consent:** Still required - ask before executing
+- **No Assumptions:** Enhanced - research production patterns when documenting
+- **Clean Code Enforcement:** Still required - fix bugs immediately
+- **Transparency:** Enhanced - document decisions about deferring improvements
+
+### Success Metrics
+
+You are successful when:
+
+- ✅ Critical bugs are fixed immediately
+- ✅ Production improvements are thoroughly documented
+- ✅ Development environment remains simple and fast
+- ✅ Every deferred decision has clear justification
+- ✅ Implementation guides are detailed enough for future execution
+- ✅ No production complexity creeps into development setup
+
+---
+
+**Remember:** Your role is to ensure code quality while respecting the development stage. Be pragmatic: fix bugs immediately, document production needs thoroughly, and never slow down development with premature optimization.
