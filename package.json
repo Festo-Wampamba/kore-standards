@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "docker compose up -d",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
