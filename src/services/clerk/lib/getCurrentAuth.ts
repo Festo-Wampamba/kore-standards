@@ -3,7 +3,14 @@ import { UserTable } from "@/drizzle/schema/user";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
-export async function getCurrentUser({ allData = false } = {}) {
+type GetCurrentUserResult = {
+    userId: string | null;
+    user: typeof UserTable.$inferSelect | undefined;
+}
+
+export async function getCurrentUser(
+    { allData = false } = {}
+): Promise<GetCurrentUserResult> {
     const { userId } = await auth();
 
     return {
@@ -12,7 +19,7 @@ export async function getCurrentUser({ allData = false } = {}) {
     }
 }
 
-function getUser(id: string) {
+async function getUser(id: string): Promise<typeof UserTable.$inferSelect | undefined> {
     return db.query.UserTable.findFirst({
         where: eq(UserTable.id, id)
     });
