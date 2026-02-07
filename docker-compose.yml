@@ -3,7 +3,7 @@ services:
     image: postgres:16-alpine
     hostname: ${DB_HOST}
     ports:
-      - "5432:${DB_PORT}"
+      - "${DB_PORT}:5432"
     environment:
       - "POSTGRES_USER=${DB_USER}"
       - "POSTGRES_PASSWORD=${DB_PASSWORD}"

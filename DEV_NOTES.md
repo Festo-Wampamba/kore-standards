@@ -1,4 +1,52 @@
-# Developer Notes & Troubleshooting
+# Developer Notes
+
+> [!CAUTION]
+> **CRITICAL: Local Development Environment Setup**
+>
+> Before starting development, you **MUST** ensure ALL THREE services are running simultaneously:
+>
+> 1. **Docker Environment** (PostgreSQL Database) - **START THIS FIRST!**
+> 2. **Next.js Development Server** (`npm run dev`)
+> 3. **Inngest Dev Server** (for webhook processing)
+>
+> **⚠️ Common Failure Scenario:**
+>
+> If Docker is not running, the PostgreSQL database will be unavailable, causing:
+>
+> - ❌ User registration failures via Clerk webhooks
+> - ❌ Inngest event processing errors
+> - ❌ Database connection timeouts
+> - ❌ Silent failures in user creation flows
+>
+> **Before Every Development Session:**
+>
+> ```bash
+> # 1. FIRST - Start Docker Desktop or Docker Engine
+> # Verify Docker is running:
+> docker ps
+>
+> # 2. Start PostgreSQL container
+> docker-compose up -d
+>
+> # 3. THEN start Next.js
+> npm run dev
+>
+> # 4. Start Inngest dev server (in separate terminal)
+> npx inngest-cli dev
+> ```
+>
+> **Health Check Checklist:**
+>
+> - [ ] Docker Desktop/Engine is running
+> - [ ] PostgreSQL container is up (`docker ps` shows postgres container)
+> - [ ] Next.js server is running (http://localhost:3000)
+> - [ ] Inngest dev server is running and connected
+>
+> **🚨 If you encounter user registration failures or webhook errors, CHECK DOCKER FIRST!**
+
+---
+
+& Troubleshooting
 
 This comprehensive developer handbook contains setup instructions, workflows, command references, and troubleshooting guides for the **Kore-Standards** project. Designed for team members working on the codebase.
 

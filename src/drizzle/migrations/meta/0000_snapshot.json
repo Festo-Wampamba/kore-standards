@@ -1,5 +1,5 @@
 {
-  "id": "309911be-746e-4d2a-a317-78c7175d8d67",
+  "id": "74e80e9b-2c3a-4e9c-97eb-60d4a07e4ef7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -22,6 +22,12 @@
         },
         "email": {
           "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imageUrl": {
+          "name": "imageUrl",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
