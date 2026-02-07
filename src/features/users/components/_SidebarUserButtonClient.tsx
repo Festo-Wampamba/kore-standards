@@ -25,7 +25,7 @@ export function SidebarUserButtonClient({
 
     return (
         <DropdownMenu>
-            <SidebarMenuTrigger asChild>
+            <DropdownMenuTrigger asChild>
                 <SidebarMenuButton 
                     size="lg" 
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -66,7 +66,13 @@ export function SidebarUserButtonClient({
 }
 
 function UserInfo({ imageUrl, email, name }: User) {
-    const nameInitials = name.split(" ").slice(0, 2).map(str => str[0]).join("")
+    const nameInitials = name
+        .split(" ")
+        .slice(0, 2)
+        .map(str => str[0] ?? "")
+        .filter(Boolean)
+        .join("")
+        .toUpperCase();
 
     return (
     <div className="flex items-center gap-2 overflow-hidden">
