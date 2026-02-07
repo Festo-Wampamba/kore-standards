@@ -9,14 +9,14 @@ import { ComponentProps } from "react";
 export function SignUpButton({
   children = <Button>Sign Up</Button>,
   ...props
-}: ComponentProps<typeof ClerkSignOutButton>) {
+}: ComponentProps<typeof ClerkSignUpButton>) {
   return <ClerkSignUpButton {...props}>{children}</ClerkSignUpButton>;
 }
 
 export function SignInButton({
   children = <Button>Sign In</Button>,
   ...props
-}: ComponentProps<typeof ClerkSignOutButton>) {
+}: ComponentProps<typeof ClerkSignInButton>) {
   return <ClerkSignInButton {...props}>{children}</ClerkSignInButton>;
 }
 
