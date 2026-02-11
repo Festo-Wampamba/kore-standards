@@ -1,5 +1,14 @@
+@import "@mdxeditor/editor/style.css";
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+/* Remove default number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -25,6 +34,8 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-featured-foreground: var(--featured-foreground);
+  --color-featured: var(--featured);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -60,6 +71,12 @@
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
+  --featured: oklch(
+    0.79 0.16 85
+  ); /* Changed to Gold for featured badge background */
+  --featured-foreground: oklch(
+    0.985 0 0
+  ); /* Changed to White for featured badge text for visibility */
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
@@ -94,6 +111,12 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
   --muted-foreground: oklch(0.705 0.015 286.067);
+  --featured: oklch(
+    0.79 0.16 85
+  ); /* Changed to Gold for featured badge background */
+  --featured-foreground: oklch(
+    0.985 0 0
+  ); /* Changed to White for featured badge text for visibility */
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
@@ -121,5 +144,28 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .mdxeditor-root-contenteditable {
+    @apply border-input has-focus-visible:border-ring has-focus-visible:ring-ring/50
+  dark:bg-input/30 rounded-md rounded-t-none border bg-transparent px-3 shadow-xs
+  transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px]
+  disabled:cursor-not-allowed disabled:opacity-50 overflow-hidden;
+
+    & * {
+      outline: none;
+    }
+  }
+
+  .mdxeditor-toolbar {
+    @apply bg-card border-card rounded-md !border-b-0 shadow-sm flex-wrap;
+  }
+
+  .mdxeditor-popup-container {
+    @apply !z-50;
+  }
+
+  .dark-theme {
+    --basePageBg: var(--muted) !important;
   }
 }

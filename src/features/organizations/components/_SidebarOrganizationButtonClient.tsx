@@ -67,7 +67,7 @@ export function SidebarOrganizationButtonClient({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link href="/organizations/select">
+                    <Link href="/organization/select">
                     <ArrowLeftRightIcon className="mr-1" /> Switch Organizations
                     </Link>
                 </DropdownMenuItem>
