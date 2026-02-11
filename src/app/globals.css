@@ -1,4 +1,4 @@
-@import "@mdxeditor/editor/style.css";
+/* @import "@mdxeditor/editor/style.css"; */
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
