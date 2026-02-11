@@ -230,24 +230,28 @@ erDiagram
 ### Use Case Overview
 
 ```mermaid
-useCaseDiagram
-    actor "Job Seeker" as JS
-    actor "Employer" as EMP
-    actor "System Admin" as ADMIN
+graph LR
+    %% Actors
+    JS[Job Seeker]
+    EMP[Employer]
+    ADMIN[System Admin]
 
-    package "Kore-Standards Platform" {
-        usecase "Sign Up / Login" as UC1
-        usecase "Manage User Profile" as UC2
-        usecase "Search Jobs (AI Semantic)" as UC3
-        usecase "View Job Details" as UC4
-        usecase "Apply for Job" as UC5
-        usecase "Upload Resume/CV" as UC6
-        usecase "Manage Applications" as UC7
-        usecase "Post Job Listing" as UC8
-        usecase "Verify Organization" as UC9
-        usecase "System Monitoring" as UC10
-    }
+    %% System Boundary
+    subgraph "Kore-Standards Platform"
+        direction TB
+        UC1([Sign Up / Login])
+        UC2([Manage User Profile])
+        UC3([Search Jobs - AI Semantic])
+        UC4([View Job Details])
+        UC5([Apply for Job])
+        UC6([Upload Resume/CV])
+        UC7([Manage Applications])
+        UC8([Post Job Listing])
+        UC9([Verify Organization])
+        UC10([System Monitoring])
+    end
 
+    %% Relationships
     JS --> UC1
     EMP --> UC1
     ADMIN --> UC1
@@ -268,6 +272,7 @@ useCaseDiagram
     ADMIN --> UC9
     ADMIN --> UC10
 
+    %% Styling
     classDef user fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B;
     classDef admin fill:#F472B6,stroke:#DB2777,stroke-width:2px,color:#1E293B;
     classDef usecase fill:#D1FAE5,stroke:#059669,stroke-width:2px,color:#064E3B;
