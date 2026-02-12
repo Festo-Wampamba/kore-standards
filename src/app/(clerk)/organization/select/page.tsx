@@ -15,7 +15,13 @@ export default async function OrganizationSelectPage(props: Props) {
 
 async function SuspendedPage({ searchParams }: Props) {
   const { redirect } = await searchParams;
-  const redirectUrl = redirect || "/employer";
+  // SECURITY CHECK:
+  // 1. Must start with "/" (relative path)
+  // 2. Must NOT start with "//" (protocol-relative external link)
+  const isInternal = redirect?.startsWith("/") && !redirect.startsWith("//");
+
+  // If it's valid, use it. If not (or if empty), default to "/employer"
+  const redirectUrl = isInternal ? redirect : "/employer";
 
   return (
     <OrganizationList

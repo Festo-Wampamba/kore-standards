@@ -76,33 +76,33 @@ Kore-Standards employs a **Design Science Research (DSR) methodology** to create
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
-        A[Job Seeker Dashboard]
-        B[Employer Dashboard]
+    subgraph CLIENT["🖥️ Client Layer"]
+        A["👤 Job Seeker Dashboard"]
+        B["🏢 Employer Dashboard"]
     end
 
-    subgraph "Application Layer - Next.js"
-        C[App Router]
-        D[API Routes]
-        E[Server Components]
+    subgraph APP["⚡ Application Layer — Next.js"]
+        C["🔀 App Router"]
+        D["📡 API Routes"]
+        E["🧩 Server Components"]
     end
 
-    subgraph "Business Logic Layer"
-        F[Authentication - Clerk]
-        G[AI Matching Engine]
-        H[Notification Service - Inngest]
-        I[Verification Workflow]
+    subgraph LOGIC["🧠 Business Logic Layer"]
+        F["🔐 Authentication — Clerk"]
+        G["🤖 AI Matching Engine"]
+        H["🔔 Notification Service — Inngest"]
+        I["✅ Verification Workflow"]
     end
 
-    subgraph "Data Layer"
-        J[Drizzle ORM]
-        K[(PostgreSQL Database)]
+    subgraph DATA["💾 Data Layer"]
+        J["🔧 Drizzle ORM"]
+        K[("🐘 PostgreSQL")]
     end
 
-    subgraph "External Services"
-        L[OpenAI/Gemini API]
-        M[Email Service]
-        N[File Storage]
+    subgraph EXT["🌐 External Services"]
+        L["🧬 OpenAI / Gemini API"]
+        M["📧 Email Service"]
+        N["📁 File Storage"]
     end
 
     A --> C
@@ -123,12 +123,26 @@ graph TB
     A --> N
     B --> N
 
-    style A fill:#e1f5ff
-    style B fill:#e1f5ff
-    style K fill:#ffe1e1
-    style L fill:#fff4e1
-    style M fill:#fff4e1
-    style N fill:#fff4e1
+    style CLIENT fill:#DBEAFE,stroke:#3B82F6,stroke-width:2px,color:#1E3A5F
+    style APP fill:#D1FAE5,stroke:#10B981,stroke-width:2px,color:#064E3B
+    style LOGIC fill:#EDE9FE,stroke:#8B5CF6,stroke-width:2px,color:#4C1D95
+    style DATA fill:#FEF3C7,stroke:#F59E0B,stroke-width:2px,color:#78350F
+    style EXT fill:#FFE4E6,stroke:#F43F5E,stroke-width:2px,color:#881337
+
+    style A fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B
+    style B fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B
+    style C fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
+    style D fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
+    style E fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
+    style F fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
+    style G fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
+    style H fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
+    style I fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
+    style J fill:#FBBF24,stroke:#D97706,stroke-width:2px,color:#1E293B
+    style K fill:#FCD34D,stroke:#B45309,stroke-width:2px,color:#1E293B
+    style L fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
+    style M fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
+    style N fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
 ```
 
 ---
@@ -139,77 +153,77 @@ graph TB
 
 ```mermaid
 erDiagram
-    USERS ||--|| USER_RESUMES : "has"
-    USERS ||--|| USER_NOTIFICATION_SETTINGS : "has"
-    USERS ||--o{ ORGANIZATION_USER_SETTINGS : "manages"
-    USERS ||--o{ JOB_LISTING_APPLICATIONS : "submits"
+    ORGANIZATIONS ||--o{ JOB_LISTINGS : posts
+    ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : managed_by
 
-    ORGANIZATIONS ||--o{ JOB_LISTINGS : "posts"
-    ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : "managed_by"
+    USERS ||--o{ ORGANIZATION_USER_SETTINGS : manages
+    USERS ||--o{ JOB_LISTING_APPLICATIONS : submits
+    USERS ||--|| USER_RESUMES : has
+    USERS ||--|| USER_NOTIFICATION_SETTINGS : has
 
-    JOB_LISTINGS ||--o{ JOB_LISTING_APPLICATIONS : "receives"
+    JOB_LISTINGS ||--o{ JOB_LISTING_APPLICATIONS : receives
+
+    ORGANIZATIONS {
+        string id PK
+        string name
+        string imageUrl
+        timestamp createdAt
+        timestamp updatedAt
+    }
 
     USERS {
         string id PK
         string email
         string name
         string imageUrl
-        string createdAt
-        string updatedAt
-    }
-
-    ORGANIZATIONS {
-        string id PK
-        string name
-        string imageUrl
-        string createdAt
-        string updatedAt
+        timestamp createdAt
+        timestamp updatedAt
     }
 
     JOB_LISTINGS {
-        string id PK
+        uuid id PK
         string organizationId FK
         string title
-        string description
-        int wage
-        string wageInterval
+        text description
+        integer wage
+        enum wageInterval
         string district
         string city
-        string isFeatured
-        string locationRequirements
-        string experienceLevel
-        string status
-        string type
-        string postedAt
+        boolean isFeatured
+        enum locationRequirements
+        enum experienceLevel
+        enum status
+        enum type
+        timestamp postedAt
+    }
+
+    ORGANIZATION_USER_SETTINGS {
+        string userId "PK, FK"
+        string organizationId "PK, FK"
+        boolean newApplicationEmailNotifications
+        integer minimumRating
     }
 
     JOB_LISTING_APPLICATIONS {
-        string jobListingId FK
-        string userId FK
-        string coverLetter
-        string resumeUrl
-        int rating
-        string stage
+        uuid jobListingId "PK, FK"
+        string userId "PK, FK"
+        text coverLetter
+        text resumeUrl
+        integer rating
+        enum stage
     }
 
     USER_RESUMES {
-        string userId FK
+        string userId "PK, FK"
         string resumeFileUrl
         string resumeFileKey
         string aiSummary
     }
 
     USER_NOTIFICATION_SETTINGS {
-        string userId FK
-        string newJobEmailNotifications
+        string userId "PK, FK"
+        boolean newJobEmailNotifications
         string aiPrompt
-    }
-
-    ORGANIZATION_USER_SETTINGS {
-        string userId FK
-        string organizationId FK
-        string newApplicationEmailNotifications
-        int minimumRating
     }
 ```
 

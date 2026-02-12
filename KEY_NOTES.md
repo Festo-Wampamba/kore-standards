@@ -582,9 +582,10 @@ erDiagram
 2. **Quoting field names with special characters**:
 
 ```mermaid
+erDiagram
     ORGANIZATION_USER_SETTINGS {
-        string userId "PK_FK"
-        string organizationId "PK_FK"
+        string userId "PK, FK"
+        string organizationId "PK, FK"
         boolean newApplicationEmailNotifications
         integer minimumRating
     }
@@ -598,13 +599,13 @@ erDiagram
 
 ```mermaid
 erDiagram
-    USERS ||--|| USER_RESUMES : has
-    USERS ||--|| USER_NOTIFICATION_SETTINGS : has
-    USERS ||--o{ ORGANIZATION_USER_SETTINGS : manages
-    USERS ||--o{ JOB_LISTING_APPLICATIONS : submits
-
     ORGANIZATIONS ||--o{ JOB_LISTINGS : posts
     ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : managed_by
+
+    USERS ||--o{ ORGANIZATION_USER_SETTINGS : manages
+    USERS ||--o{ JOB_LISTING_APPLICATIONS : submits
+    USERS ||--|| USER_RESUMES : has
+    USERS ||--|| USER_NOTIFICATION_SETTINGS : has
 
     JOB_LISTINGS ||--o{ JOB_LISTING_APPLICATIONS : receives
 ```

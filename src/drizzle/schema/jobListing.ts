@@ -32,7 +32,7 @@ export const JobListingTable = pgTable("job_listings", {
     description: text().notNull(),
     wage: integer(),
     wageInterval: wageIntervalEnum(),
-    region: varchar(),
+    city: varchar(),
     district: varchar(),
     isFeatured: boolean().notNull().default(false),
     locationRequirement: locationRequirementEnum().notNull(),
@@ -46,7 +46,7 @@ export const JobListingTable = pgTable("job_listings", {
 table => [
   // Geographic filtering indexes
   index('idx_job_listings_district').on(table.district),
-  index('idx_job_listings_region').on(table.region),
+  index('idx_job_listings_region').on(table.city),
   
   // Status filtering (most common query pattern)
   index('idx_job_listings_status').on(table.status),
