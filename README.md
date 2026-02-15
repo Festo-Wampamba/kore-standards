@@ -154,7 +154,7 @@ graph TB
 ```mermaid
 erDiagram
     ORGANIZATIONS ||--o{ JOB_LISTINGS : posts
-    ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : managed_by
+    ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : has_settings
 
     USERS ||--o{ ORGANIZATION_USER_SETTINGS : manages
     USERS ||--o{ JOB_LISTING_APPLICATIONS : submits
@@ -186,31 +186,36 @@ erDiagram
         string title
         text description
         integer wage
-        enum wageInterval
+        enum wageInterval "daily, monthly, yearly"
         string district
         string city
         boolean isFeatured
-        enum locationRequirements
-        enum experienceLevel
-        enum status
-        enum type
+        enum locationRequirement "in-office, hybrid, remote"
+        enum experienceLevel "junior, mid-level, senior"
+        enum status "draft, published, delisted"
+        enum type "internship, part-time, full-time, contract"
         timestamp postedAt
+        timestamp createdAt
+        timestamp updatedAt
     }
 
     ORGANIZATION_USER_SETTINGS {
         string userId "PK, FK"
         string organizationId "PK, FK"
-        boolean newApplicationEmailNotifications
+        boolean newApplicationEmailNotification
         integer minimumRating
+        timestamp createdAt
+        timestamp updatedAt
     }
 
     JOB_LISTING_APPLICATIONS {
         uuid jobListingId "PK, FK"
         string userId "PK, FK"
         text coverLetter
-        text resumeUrl
         integer rating
-        enum stage
+        enum stage "denied, applied, interested, interviewed, hired"
+        timestamp createdAt
+        timestamp updatedAt
     }
 
     USER_RESUMES {
@@ -218,12 +223,16 @@ erDiagram
         string resumeFileUrl
         string resumeFileKey
         string aiSummary
+        timestamp createdAt
+        timestamp updatedAt
     }
 
     USER_NOTIFICATION_SETTINGS {
         string userId "PK, FK"
         boolean newJobEmailNotifications
         string aiPrompt
+        timestamp createdAt
+        timestamp updatedAt
     }
 ```
 
