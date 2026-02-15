@@ -8,6 +8,13 @@
       "when": 1770415624838,
       "tag": "0000_free_princess_powerful",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771019804701,
+      "tag": "0001_numerous_deathbird",
+      "breakpoints": true
     }
   ]
 }
