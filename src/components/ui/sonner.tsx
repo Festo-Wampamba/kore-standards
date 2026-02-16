@@ -1,5 +1,6 @@
 "use client"
 
+import { useIsDarkMode } from "@/hooks/useIsDarkMode"
 import {
   CircleCheckIcon,
   InfoIcon,
@@ -7,15 +8,14 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const isDarkMode = useIsDarkMode()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={isDarkMode ? "dark" : "light"}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,
