@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
     "inngest": "^3.51.0",
     "lucide-react": "^0.563.0",

@@ -74,76 +74,13 @@ Kore-Standards employs a **Design Science Research (DSR) methodology** to create
 
 ### Architecture Diagram
 
-```mermaid
-graph TB
-    subgraph CLIENT["🖥️ Client Layer"]
-        A["👤 Job Seeker Dashboard"]
-        B["🏢 Employer Dashboard"]
-    end
+#### Context Diagram (DFD Level 0)
 
-    subgraph APP["⚡ Application Layer — Next.js"]
-        C["🔀 App Router"]
-        D["📡 API Routes"]
-        E["🧩 Server Components"]
-    end
+![Context Diagram](./Kore-Diagrams/KORE_Context_diagram.png)
 
-    subgraph LOGIC["🧠 Business Logic Layer"]
-        F["🔐 Authentication — Clerk"]
-        G["🤖 AI Matching Engine"]
-        H["🔔 Notification Service — Inngest"]
-        I["✅ Verification Workflow"]
-    end
+#### Level Zero Data Flow Diagram
 
-    subgraph DATA["💾 Data Layer"]
-        J["🔧 Drizzle ORM"]
-        K[("🐘 PostgreSQL")]
-    end
-
-    subgraph EXT["🌐 External Services"]
-        L["🧬 OpenAI / Gemini API"]
-        M["📧 Email Service"]
-        N["📁 File Storage"]
-    end
-
-    A --> C
-    B --> C
-    C --> D
-    C --> E
-    D --> F
-    D --> G
-    D --> H
-    D --> I
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-    J --> K
-    G --> L
-    H --> M
-    A --> N
-    B --> N
-
-    style CLIENT fill:#DBEAFE,stroke:#3B82F6,stroke-width:2px,color:#1E3A5F
-    style APP fill:#D1FAE5,stroke:#10B981,stroke-width:2px,color:#064E3B
-    style LOGIC fill:#EDE9FE,stroke:#8B5CF6,stroke-width:2px,color:#4C1D95
-    style DATA fill:#FEF3C7,stroke:#F59E0B,stroke-width:2px,color:#78350F
-    style EXT fill:#FFE4E6,stroke:#F43F5E,stroke-width:2px,color:#881337
-
-    style A fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B
-    style B fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B
-    style C fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
-    style D fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
-    style E fill:#34D399,stroke:#059669,stroke-width:2px,color:#1E293B
-    style F fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
-    style G fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
-    style H fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
-    style I fill:#A78BFA,stroke:#7C3AED,stroke-width:2px,color:#1E293B
-    style J fill:#FBBF24,stroke:#D97706,stroke-width:2px,color:#1E293B
-    style K fill:#FCD34D,stroke:#B45309,stroke-width:2px,color:#1E293B
-    style L fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
-    style M fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
-    style N fill:#FB7185,stroke:#E11D48,stroke-width:2px,color:#1E293B
-```
+![Level Zero DFD](./Kore-Diagrams/Level_Zero_KORE_diagram.png)
 
 ---
 
@@ -151,146 +88,11 @@ graph TB
 
 ### Entity Relationship Overview
 
-```mermaid
-erDiagram
-    ORGANIZATIONS ||--o{ JOB_LISTINGS : posts
-    ORGANIZATIONS ||--o{ ORGANIZATION_USER_SETTINGS : has_settings
-
-    USERS ||--o{ ORGANIZATION_USER_SETTINGS : manages
-    USERS ||--o{ JOB_LISTING_APPLICATIONS : submits
-    USERS ||--|| USER_RESUMES : has
-    USERS ||--|| USER_NOTIFICATION_SETTINGS : has
-
-    JOB_LISTINGS ||--o{ JOB_LISTING_APPLICATIONS : receives
-
-    ORGANIZATIONS {
-        string id PK
-        string name
-        string imageUrl
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    USERS {
-        string id PK
-        string email
-        string name
-        string imageUrl
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    JOB_LISTINGS {
-        uuid id PK
-        string organizationId FK
-        string title
-        text description
-        integer wage
-        enum wageInterval "daily, monthly, yearly"
-        string district
-        string city
-        boolean isFeatured
-        enum locationRequirement "in-office, hybrid, remote"
-        enum experienceLevel "junior, mid-level, senior"
-        enum status "draft, published, delisted"
-        enum type "internship, part-time, full-time, contract"
-        timestamp postedAt
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    ORGANIZATION_USER_SETTINGS {
-        string userId "PK, FK"
-        string organizationId "PK, FK"
-        boolean newApplicationEmailNotification
-        integer minimumRating
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    JOB_LISTING_APPLICATIONS {
-        uuid jobListingId "PK, FK"
-        string userId "PK, FK"
-        text coverLetter
-        integer rating
-        enum stage "denied, applied, interested, interviewed, hired"
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    USER_RESUMES {
-        string userId "PK, FK"
-        string resumeFileUrl
-        string resumeFileKey
-        string aiSummary
-        timestamp createdAt
-        timestamp updatedAt
-    }
-
-    USER_NOTIFICATION_SETTINGS {
-        string userId "PK, FK"
-        boolean newJobEmailNotifications
-        string aiPrompt
-        timestamp createdAt
-        timestamp updatedAt
-    }
-```
+![Entity Relationship Diagram](./Kore-Diagrams/KORE_ERD.png)
 
 ### Use Case Overview
 
-```mermaid
-graph LR
-    %% Actors
-    JS[Job Seeker]
-    EMP[Employer]
-    ADMIN[System Admin]
-
-    %% System Boundary
-    subgraph "Kore-Standards Platform"
-        direction TB
-        UC1([Sign Up / Login])
-        UC2([Manage User Profile])
-        UC3([Search Jobs - AI Semantic])
-        UC4([View Job Details])
-        UC5([Apply for Job])
-        UC6([Upload Resume/CV])
-        UC7([Manage Applications])
-        UC8([Post Job Listing])
-        UC9([Verify Organization])
-        UC10([System Monitoring])
-    end
-
-    %% Relationships
-    JS --> UC1
-    EMP --> UC1
-    ADMIN --> UC1
-
-    JS --> UC2
-    EMP --> UC2
-
-    JS --> UC3
-    JS --> UC4
-    JS --> UC5
-    JS --> UC6
-    JS --> UC7
-
-    EMP --> UC7
-    EMP --> UC8
-    EMP --> UC9
-
-    ADMIN --> UC9
-    ADMIN --> UC10
-
-    %% Styling
-    classDef user fill:#60A5FA,stroke:#2563EB,stroke-width:2px,color:#1E293B;
-    classDef admin fill:#F472B6,stroke:#DB2777,stroke-width:2px,color:#1E293B;
-    classDef usecase fill:#D1FAE5,stroke:#059669,stroke-width:2px,color:#064E3B;
-    classDef package fill:#F3F4F6,stroke:#9CA3AF,stroke-width:2px,color:#1F2937;
-
-    class JS,EMP user;
-    class ADMIN admin;
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10 usecase;
-```
+![Use Case Diagram](./Kore-Diagrams/KORE_USE.png)
 
 ### Table Descriptions
 
