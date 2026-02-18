@@ -76,11 +76,11 @@ Kore-Standards employs a **Design Science Research (DSR) methodology** to create
 
 #### Context Diagram (DFD Level 0)
 
-![Context Diagram](./Kore-Diagrams/KORE%20Context%20diagram.svg)
+![Context Diagram](./Kore-Diagrams/KORE_Context_diagram.png)
 
 #### Level Zero Data Flow Diagram
 
-![Level Zero DFD](./Kore-Diagrams/Level_Zero_KORE_%20diagram.svg)
+![Level Zero DFD](./Kore-Diagrams/Level_Zero_KORE_diagram.png)
 
 ---
 
@@ -88,11 +88,11 @@ Kore-Standards employs a **Design Science Research (DSR) methodology** to create
 
 ### Entity Relationship Overview
 
-![Entity Relationship Diagram](./Kore-Diagrams/KORE%20ERD.svg)
+![Entity Relationship Diagram](./Kore-Diagrams/KORE_ERD.png)
 
 ### Use Case Overview
 
-![Use Case Diagram](./Kore-Diagrams/KORE_USE.svg)
+![Use Case Diagram](./Kore-Diagrams/KORE_USE.png)
 
 ### Table Descriptions
 
